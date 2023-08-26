@@ -1,5 +1,5 @@
 
-- [ ] Bilinear
+- [x] Bilinear
 - [ ] HA
-- [ ] GBTF
-- [ ] RI
+- [x] GBTF
+- [x] RI
