@@ -30,20 +30,17 @@ for picname in ['./kodim19.png']:
     src_img = cv2.cvtColor(src_img, cv2.COLOR_BGR2RGB)
 
     bayer_img = make_bayer(src_img)
-    # plt.imshow(bayer_img), plt.show()
+    plt.imshow(bayer_img), plt.show()
 
-    # bilinear_img = bilinear.run(bayer_img)
-    # plt.imshow(bilinear_img), plt.show()
-    # print('Bilinear: ', metrics(src_img, bilinear_img))
+    bilinear_img = bilinear.run(bayer_img)
+    plt.imshow(bilinear_img), plt.show()
+    print('Bilinear: ', metrics(src_img, bilinear_img))
 
-    # gbtf_img = GBTF.run(bayer_img)
-    # plt.imshow(gbtf_img), plt.show()
-    # print('GBTF: ', metrics(src_img, gbtf_img))
+    gbtf_img = GBTF.run(bayer_img)
+    plt.imshow(gbtf_img), plt.show()
+    print('GBTF: ', metrics(src_img, gbtf_img))
 
-    # ri_img = RI.run(bayer_img)
-    # plt.imshow(ri_img), plt.show()
-    # print('RI: ', metrics(src_img, ri_img))
+    ri_img = RI.run(bayer_img)
+    plt.imshow(ri_img), plt.show()
+    print('RI: ', metrics(src_img, ri_img))
 
-    ha_img = HA.run(bayer_img)
-    plt.imshow(ha_img), plt.show()
-    print('HA: ', metrics(src_img, ha_img))
