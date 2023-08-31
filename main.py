@@ -36,6 +36,10 @@ for picname in ['./kodim19.png']:
     plt.imshow(bilinear_img), plt.show()
     print('Bilinear: ', metrics(src_img, bilinear_img))
 
+    ha_img = HA.run(bayer_img)
+    plt.imshow(ha_img), plt.show()
+    print('HA: ', metrics(src_img, ha_img))
+
     gbtf_img = GBTF.run(bayer_img)
     plt.imshow(gbtf_img), plt.show()
     print('GBTF: ', metrics(src_img, gbtf_img))
