@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-from methods import bilinear, HA, GBTF, RI
+from methods import Bilinear, HA, GBTF, RI
 
 def metrics(raw_img, new_img):
     result = []
@@ -32,7 +32,7 @@ for picname in ['./kodim19.png']:
     bayer_img = make_bayer(src_img)
     plt.imshow(bayer_img), plt.show()
 
-    bilinear_img = bilinear.run(bayer_img)
+    bilinear_img = Bilinear.run(bayer_img)
     plt.imshow(bilinear_img), plt.show()
     print('Bilinear: ', metrics(src_img, bilinear_img))
 
