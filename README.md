@@ -5,7 +5,7 @@ DONT include learning-based methods.
 GOAL: NOT fast, NOT elegant, but clear!
 
 - [x] Bilinear
-- [ ] HA
+- [x] HA
 - [ ] DLMMSE
 - [x] GBTF
 - [x] RI
