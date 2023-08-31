@@ -1,7 +1,6 @@
-Try to use python to implement some demosaicing algorithms.
-Don't include learning-based methods.
+Try to use python to implement some **not learning-based** demosaicing algorithms.
 
-GOAL: NOT fast, NOT elegant, but clear.
+GOAL: NOT fast, NOT elegant, BUT clear.
 - [x] Bilinear
 - [x] HA
 - [ ] DLMMSE
