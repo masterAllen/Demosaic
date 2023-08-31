@@ -1,6 +1,6 @@
 Try to use python to implement some demosaicing algorithms.
 
-Not including learning-based methods.
+DONT include learning-based methods.
 
 GOAL: NOT fast, NOT elegant, but clear!
 
