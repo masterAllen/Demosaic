@@ -3,7 +3,7 @@ Try to use python to implement some **not learning-based** demosaicing algorithm
 GOAL: NOT fast, NOT elegant, BUT clear.
 - [x] Bilinear
 - [x] HA
-- [ ] DLMMSE
+- [x] DLMMSE
 - [x] GBTF
 - [x] RI
 - [ ] MLRI
