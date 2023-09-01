@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-from methods import Bilinear, HA, GBTF, RI
+from methods import Bilinear, HA, GBTF, RI, DLMMSE
 
 def metrics(raw_img, new_img):
     result = []
@@ -39,6 +39,10 @@ for picname in ['./kodim19.png']:
     ha_img = HA.run(bayer_img)
     plt.imshow(ha_img), plt.show()
     print('HA: ', metrics(src_img, ha_img))
+
+    dlmmse_img = DLMMSE.run(bayer_img)
+    plt.imshow(dlmmse_img), plt.show()
+    print('DLMMSE: ', metrics(src_img, dlmmse_img))
 
     gbtf_img = GBTF.run(bayer_img)
     plt.imshow(gbtf_img), plt.show()
