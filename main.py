@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from methods import Bilinear, HQL, HA
-from methods import GBTF, RI, DLMMSE
+from methods import GBTF, RI, DLMMSE, IRI
 
 def metrics(raw_img, new_img):
     result = []
@@ -56,4 +56,8 @@ for picname in ['./kodim19.png']:
     ri_img = RI.run(bayer_img)
     plt.imshow(ri_img), plt.show()
     print('RI: ', metrics(src_img, ri_img))
+
+    iri_img = RI.run(bayer_img)
+    plt.imshow(iri_img), plt.show()
+    print('IRI: ', metrics(src_img, iri_img))
 
