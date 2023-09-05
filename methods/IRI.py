@@ -102,7 +102,7 @@ def run(img):
     # print(metrics(img2.astype(np.uint8), src_img))
 
     # Get G
-    G = ((wh * img1[:, :, 1] + wv * img2[:, :, 1]) / (wh + wv)).clip(0, 255)
+    new_G = ((wh * img1[:, :, 1] + wv * img2[:, :, 1]) / (wh + wv)).clip(0, 255)
 
     # RI R and B
     R = img[:, :, 0].astype(float)
@@ -110,8 +110,8 @@ def run(img):
     R_Mask = np.zeros(img.shape[0:2]); R_Mask[0::2, 0::2] = 1
     B_Mask = np.zeros(img.shape[0:2]); B_Mask[1::2, 1::2] = 1
 
-    new_R = guide_filter(R_Mask, G, R, 11, 11)
-    new_B = guide_filter(B_Mask, G, B, 11, 11)
+    new_R = guide_filter(R_Mask, new_G, R, 11, 11)
+    new_B = guide_filter(B_Mask, new_G, B, 11, 11)
 
     delta_R = (R - new_R) * R_Mask
     delta_B = (B - new_B) * B_Mask
@@ -123,8 +123,5 @@ def run(img):
     new_R = new_R + delta_R
     new_B = new_B + delta_B
 
-    new_R = (new_R + 0.5).clip(0, 255)
-    new_B = (new_B + 0.5).clip(0, 255)
-
-    new_img = np.dstack((new_R, G, new_B))
+    new_img = np.dstack((new_R, new_G, new_B))
     return new_img.astype(np.uint8)
