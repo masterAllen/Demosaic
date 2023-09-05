@@ -6,14 +6,14 @@ def run(img):
     def guide_filter(M, I, p, h, v, eps=0.01):
         sum_kernel = np.ones((h, v))
 
-        N1 = signal.convolve2d(M, sum_kernel, mode='same')
-        N2 = signal.convolve2d(np.ones(I.shape), sum_kernel, mode='same')
+        N1 = convolve2d(M, sum_kernel, mode='same')
+        N2 = convolve2d(np.ones(I.shape), sum_kernel, mode='same')
 
         ok_I = I * M; ok_p = p * M
-        mean_I = signal.convolve2d(ok_I, sum_kernel, mode='same') / N1
-        mean_p = signal.convolve2d(ok_p, sum_kernel, mode='same') / N1
-        corr_I = signal.convolve2d(ok_I*ok_I, sum_kernel, mode='same') / N1
-        corr_Ip = signal.convolve2d(ok_I*ok_p, sum_kernel, mode='same') / N1
+        mean_I = convolve2d(ok_I, sum_kernel, mode='same') / N1
+        mean_p = convolve2d(ok_p, sum_kernel, mode='same') / N1
+        corr_I = convolve2d(ok_I*ok_I, sum_kernel, mode='same') / N1
+        corr_Ip= convolve2d(ok_I*ok_p, sum_kernel, mode='same') / N1
 
         var_I = corr_I - mean_I * mean_I
         cov_Ip = corr_Ip - mean_I * mean_p
@@ -21,8 +21,8 @@ def run(img):
         a = cov_Ip / (var_I + eps)
         b = mean_p - a * mean_I
 
-        mean_a = signal.convolve2d(a, sum_kernel, mode='same') / N2
-        mean_b = signal.convolve2d(b, sum_kernel, mode='same') / N2
+        mean_a = convolve2d(a, sum_kernel, mode='same') / N2
+        mean_b = convolve2d(b, sum_kernel, mode='same') / N2
 
         return mean_a * I + mean_b
 
@@ -91,10 +91,10 @@ def run(img):
         return 1/w, new_img
 
     # Horizontal
-    wh, img1 = IRI_onedirection(img, 7)
+    wh, img1 = IRI_onedirection(img, 3)
     # Vertical
     img2 = np.transpose(img, (1, 0, 2))
-    wv, img2 = IRI_onedirection(img2, 7)
+    wv, img2 = IRI_onedirection(img2, 3)
     img2 = np.transpose(img2, (1, 0, 2))
     wv = np.transpose(wv, (1, 0))
 
