@@ -57,7 +57,6 @@ for picname in ['./kodim19.png']:
     plt.imshow(ri_img), plt.show()
     print('RI: ', metrics(src_img, ri_img))
 
-    iri_img = RI.run(bayer_img)
+    iri_img = IRI.run(bayer_img)
     plt.imshow(iri_img), plt.show()
     print('IRI: ', metrics(src_img, iri_img))
-
