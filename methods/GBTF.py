@@ -88,7 +88,7 @@ def run(img):
 
     now_kernel = np.ones((7, 7))
 
-    # Can simplify eq.10 to this
+    # Can simplify eq.9 to this
     # now_delta = convolve2d(delta_GR, now_kernel, mode='same') / np.sum(now_kernel)
     now_delta = convolve2d(delta_GR, prb, mode='same') / np.sum(prb)
     new_R[1::2, 1::2] = (new_G - now_delta)[1::2, 1::2]
