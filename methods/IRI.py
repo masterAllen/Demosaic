@@ -2,6 +2,8 @@ import numpy as np
 from scipy.signal import convolve2d
 from scipy.ndimage import convolve1d
 
+from . import RI
+
 def run(img):
     def guide_filter(M, I, p, h, v, eps=0.01):
         sum_kernel = np.ones((h, v))
@@ -104,24 +106,5 @@ def run(img):
     # Get G
     new_G = ((wh * img1[:, :, 1] + wv * img2[:, :, 1]) / (wh + wv)).clip(0, 255)
 
-    # RI R and B
-    R = img[:, :, 0].astype(float)
-    B = img[:, :, 2].astype(float)
-    R_Mask = np.zeros(img.shape[0:2]); R_Mask[0::2, 0::2] = 1
-    B_Mask = np.zeros(img.shape[0:2]); B_Mask[1::2, 1::2] = 1
-
-    new_R = guide_filter(R_Mask, new_G, R, 11, 11)
-    new_B = guide_filter(B_Mask, new_G, B, 11, 11)
-
-    delta_R = (R - new_R) * R_Mask
-    delta_B = (B - new_B) * B_Mask
-
-    intp = np.array([[1/4, 1/2, 1/4], [1/2, 1, 1/2], [1/4, 1/2, 1/4]])
-    delta_R = convolve2d(delta_R, intp, mode='same') / convolve2d(R_Mask, intp, mode='same')
-    delta_B = convolve2d(delta_B, intp, mode='same') / convolve2d(B_Mask, intp, mode='same')
-
-    new_R = new_R + delta_R
-    new_B = new_B + delta_B
-
-    new_img = np.dstack((new_R, new_G, new_B))
-    return new_img.astype(np.uint8)
+    # predict R and B by RI, so just call it :)
+    return RI.run(img, ok_G=new_G)
