@@ -8,4 +8,4 @@ GOAL: NOT fast, NOT elegant, BUT clear.
 - [x] GBTF
 - [x] RI
 - [ ] MLRI
-- [ ] IRI (Oops, not correct.)
+- [x] IRI
