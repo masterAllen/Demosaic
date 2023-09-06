@@ -49,7 +49,7 @@ def run(img):
             old_G = GR + GB
 
             # Step 2: Use guide filter to predict 
-            t = 4
+            t = 3
             new_GR = guide_filter(GR_Mask, R, GR, 2*t+1, 4*t+1); new_GR[1::2, :] = 0
             new_GB = guide_filter(GB_Mask, B, GB, 2*t+1, 4*t+1); new_GB[0::2, :] = 0
             new_R = guide_filter(R_Mask, GR, R, 2*t+1, 4*t+1); new_R[1::2, :] = 0
@@ -77,13 +77,13 @@ def run(img):
             # Step 5: Check MAD(Mean absolute difference)
             mad = np.sum(np.abs(GR + GB - old_G)) / GR.size
             # print(mad)
-            if mad < 1.0:
+            if mad < 0.5:
                 break
 
         gaussian_filter = [4, 9, 15, 23, 26, 23, 15, 9, 4]
-        w = np.abs(convolve1d(delta_G, [-1, 0, 1]))
-        w = convolve1d(w, gaussian_filter) / np.sum(gaussian_filter)
-        w = w + 1e-10
+        var = np.abs(convolve1d(delta_G, [-1, 0, 1]))
+        var = convolve1d(var, gaussian_filter) / np.sum(gaussian_filter)
+        w = var * var + 1e-10
 
         return 1/w, GR+GB
 
@@ -91,8 +91,8 @@ def run(img):
     R = img[:, :, 0].astype(float)
     B = img[:, :, 2].astype(float)
     G = img[:, :, 1].astype(float)
-    wh, Gh = IRI_onedirection(R, G, B, 3)
-    wv, Gv = IRI_onedirection(R.T, G.T, B.T, 3)
+    wh, Gh = IRI_onedirection(R, G, B, 4)
+    wv, Gv = IRI_onedirection(R.T, G.T, B.T, 4)
     wv = wv.T; Gv = Gv.T
 
     # generate new G
