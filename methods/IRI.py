@@ -28,10 +28,7 @@ def run(img):
 
         return mean_a * I + mean_b
 
-    def IRI_onedirection(now_img, times):
-        R = now_img[:, :, 0].astype(float)
-        B = now_img[:, :, 2].astype(float)
-        G = now_img[:, :, 1].astype(float)
+    def IRI_onedirection(R, G, B, times):
         GR = np.copy(G); GR[1::2, :] = 0
         GB = np.copy(G); GB[0::2, :] = 0
 
@@ -55,7 +52,6 @@ def run(img):
             t = 4
             new_GR = guide_filter(GR_Mask, R, GR, 2*t+1, 4*t+1); new_GR[1::2, :] = 0
             new_GB = guide_filter(GB_Mask, B, GB, 2*t+1, 4*t+1); new_GB[0::2, :] = 0
-
             new_R = guide_filter(R_Mask, GR, R, 2*t+1, 4*t+1); new_R[1::2, :] = 0
             new_B = guide_filter(B_Mask, GB, B, 2*t+1, 4*t+1); new_B[0::2, :] = 0
 
@@ -65,10 +61,10 @@ def run(img):
             delta_GR = (new_GR - GR) * GR_Mask
             delta_GB = (new_GB - GB) * GB_Mask
 
-            delta_R = convolve1d(delta_R, [1, 2, 1]) / 2
-            delta_B = convolve1d(delta_B, [1, 2, 1]) / 2
-            delta_GR = convolve1d(delta_GR, [1, 2, 1]) / 2
-            delta_GB = convolve1d(delta_GB, [1, 2, 1]) / 2
+            delta_R = convolve1d((new_R - R) * R_Mask, [1, 2, 1]) / 2
+            delta_B = convolve1d((new_B - B) * B_Mask, [1, 2, 1]) / 2
+            delta_GR = convolve1d((new_GR - GR) * GR_Mask, [1, 2, 1]) / 2
+            delta_GB = convolve1d((new_GB - GB) * GB_Mask, [1, 2, 1]) / 2
 
             delta_G = delta_GR + delta_GB
 
@@ -89,22 +85,18 @@ def run(img):
         w = convolve1d(w, gaussian_filter) / np.sum(gaussian_filter)
         w = w + 1e-10
 
-        new_img = np.dstack((R, GR+GB, B))
-        return 1/w, new_img
+        return 1/w, GR+GB
 
     # Horizontal
-    wh, img1 = IRI_onedirection(img, 3)
-    # Vertical
-    img2 = np.transpose(img, (1, 0, 2))
-    wv, img2 = IRI_onedirection(img2, 3)
-    img2 = np.transpose(img2, (1, 0, 2))
-    wv = np.transpose(wv, (1, 0))
+    R = img[:, :, 0].astype(float)
+    B = img[:, :, 2].astype(float)
+    G = img[:, :, 1].astype(float)
+    wh, Gh = IRI_onedirection(R, G, B, 3)
+    wv, Gv = IRI_onedirection(R.T, G.T, B.T, 3)
+    wv = wv.T; Gv = Gv.T
 
-    # print(metrics(img1.astype(np.uint8), src_img))
-    # print(metrics(img2.astype(np.uint8), src_img))
-
-    # Get G
-    new_G = ((wh * img1[:, :, 1] + wv * img2[:, :, 1]) / (wh + wv)).clip(0, 255)
+    # generate new G
+    new_G = ((wh * Gh + wv * Gv) / (wh + wv)).clip(0, 255)
 
     # predict R and B by RI, so just call it :)
     return RI.run(img, ok_G=new_G)
