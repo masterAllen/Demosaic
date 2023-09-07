@@ -7,5 +7,5 @@ GOAL: NOT fast, NOT elegant, BUT clear.
 - [x] DLMMSE
 - [x] GBTF
 - [x] RI
-- [ ] MLRI
+- [x] MLRI
 - [x] IRI
